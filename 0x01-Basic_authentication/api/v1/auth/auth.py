@@ -8,6 +8,8 @@ from typing import List, TypeVar
 class Auth:
     """
     Class: Class to manage the API authentication
+
+    Return: work as a 
     """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         return False
