@@ -28,4 +28,3 @@ class Auth:
         Currently returns None.
         """
         return None
-
