@@ -8,9 +8,6 @@ class Auth:
     Auth class to manage API authentication.
 
     This class provides a template for handling authentication in an API.
-    It defines methods to determine whether authentication is required for
-    specific routes, validate the presence of authorization headers, and
-    retrieve the current user based on the request.
 
     Methods:
         - require_auth(path: str, excluded_paths: List[str]) -> bool:
