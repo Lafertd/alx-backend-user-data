@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-""" Check response
+""" Main 2
 """
+from api.v1.auth.basic_auth import BasicAuth
 
-if __name__ == "__main__":
-    from api.v1.auth.basic_auth import BasicAuth
-    from api.v1.auth.auth import Auth
-    from api.v1.app import auth
+a = BasicAuth()
 
-    if auth is None:
-        print("'auth' doesn't exist in api/v1/app.py")
-        exit(1)
-    if not isinstance(auth, Auth):
-        print("auth is not an instance of BasicAuth")
-        exit(1)
-    print("OK")
+print(a.extract_base64_authorization_header(None))
+print(a.extract_base64_authorization_header(89))
+print(a.extract_base64_authorization_header("Holberton School"))
+print(a.extract_base64_authorization_header("Basic Holberton"))
+print(a.extract_base64_authorization_header("Basic SG9sYmVydG9u"))
+print(a.extract_base64_authorization_header("Basic SG9sYmVydG9uIFNjaG9vbA=="))
+print(a.extract_base64_authorization_header("Basic1234"))
