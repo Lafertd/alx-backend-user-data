@@ -28,7 +28,9 @@ class Auth:
         Returns the authorization header.
         Currently returns None.
         """
-        return None
+        if request is None or Authorization not in request.keys():
+            return None
+        return request['Authorization']
 
     def current_user(self, request=None) -> 'User':
         """
