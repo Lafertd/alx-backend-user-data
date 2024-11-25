@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-git add . && git commit -m "updated" && git push && clear && ls -la --color=auto git status
+git add . && git commit -m "updated" && git push && clear && ls -la --color=red
