@@ -1,57 +1,29 @@
 #!/usr/bin/env python3
-
+# api/v1/auth/auth.py
 from flask import request
-from typing import List, TypeVar
+from typing import List
 
 class Auth:
-    """
-    Auth class to manage API authentication.
-
-    This class provides a template for handling authentication in an API.
-
-    Methods:
-        - require_auth(path: str, excluded_paths: List[str]) -> bool:
-          Determines if a path requires authentication.
-        - authorization_header(request=None) -> str:
-          Retrieves the Authorization header from a request.
-        - current_user(request=None) -> TypeVar('User'):
-          Identifies and returns the current user making the request.
-    """
+    """Auth class to manage API authentication."""
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
-        Determines if the given path requires authentication.
-
-        Args:
-            path (str): The URL path being accessed.
-            excluded_paths (List[str]): A list of paths that do not require authentication.
-
-        Returns:
-            bool: True if authentication is required for the given path, False otherwise.
+        Determines if authentication is required for a given path.
+        Currently returns False.
         """
         return False
 
     def authorization_header(self, request=None) -> str:
         """
-        Retrieves the Authorization header from the request.
-
-        Args:
-            request: The Flask request object.
-
-        Returns:
-            str: The value of the Authorization header if present, otherwise None.
+        Returns the authorization header.
+        Currently returns None.
         """
         return None
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None) -> 'User':
         """
-        Retrieves the current user associated with the request.
-
-        Args:
-            request: The Flask request object.
-
-        Returns:
-            TypeVar('User'): The user object associated with the request if available, otherwise None.
+        Returns the current user.
+        Currently returns None.
         """
         return None
 

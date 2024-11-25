@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-git add . && git commit -m "updated" && git push && clear && ls
+git add . && git commit -m "updated" && git push && clear && ls && ./p
