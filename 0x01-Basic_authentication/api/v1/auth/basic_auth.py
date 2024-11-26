@@ -5,6 +5,8 @@ Module: basic_auth.py
 The BasicAuth class inherits from the Auth class and will be used 
 to manage basic authentication features.
 """
+import base64
+import binascii
 from api.v1.auth.auth import Auth
 
 class BasicAuth(Auth):
@@ -26,23 +28,23 @@ class BasicAuth(Auth):
             token = authorization_header.split(" ", 1)[1]
             return token
 
-def decode_base64_authorization_header(self, base64_authorization_header: str) -> str:
-    """
-    Decodes a Base64-encoded authorization header.
-
-    Args:
+    def decode_base64_authorization_header(self, base64_authorization_header: str) -> str:
+        """
+        Decodes a Base64-encoded authorization header.
+        
+        Args:
         base64_authorization_header (str): The Base64 string to decode.
 
-    Returns:
+        Returns:
         str: The decoded string if valid, otherwise None.
-    """
-    if base64_authorization_header is None or not isinstance(base64_authorization_header, str):
-        return None
+        """
 
-    try:
-        # Decode the Base64 string
-        decoded_bytes = base64.b64decode(base64_authorization_header, validate=True)
-        return decoded_bytes.decode('utf-8')  # Convert bytes to string
-    except (base64.binascii.Error, UnicodeDecodeError):
-        # Handle invalid Base64 or decoding errors
-        return None
+        if base64_authorization_header is None or not isinstance(base64_authorization_header, str):
+            return None
+
+        try:
+            # Decode the Base64 string
+            decoded_bytes = base64.b64decode(base64_authorization_header, validate=True)
+            return decoded_bytes.decode('utf-8')  # Convert bytes to str
+        except binascii.Error:
+            return None
