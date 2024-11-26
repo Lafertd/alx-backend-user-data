@@ -8,6 +8,8 @@ to manage basic authentication features.
 import base64
 import binascii
 from api.v1.auth.auth import Auth
+from typing import TypeVar
+from models.user import User
 
 class BasicAuth(Auth):
     """
@@ -61,3 +63,29 @@ class BasicAuth(Auth):
             return None, None
         credentials = tuple(decode_base64_authorization_header.split(':', 2))
         return credentials
+
+    def user_object_from_credentials(self, user_email:str, user_pwd:str) -> TypeVar('User'):
+        """ Extract User object based on the user's credentials
+
+        Args:
+        user_email (str): email of the user
+        user_pwd (str): password of the user
+
+        Returns:
+        the instance of the user if the credentials match the user's email and password inside the database
+        """
+        user = User()
+        if user_email or user_pwd is None:#not isinstance(user_email, str) or not isinstance(user_pwd, str):
+            return None
+        if not isinstance(user_email, str) or not isinstance(user_pwd, str):
+            return None
+        dict_user_emails = {}
+        dict_user_emails['user_email']
+        try:
+            user.search(dict_user_emails)
+        except:
+            return None
+        
+        if is_valid_password is False:
+            return None
+        return user.search(dict_user_emails)
