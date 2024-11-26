@@ -74,18 +74,19 @@ class BasicAuth(Auth):
         Returns:
         the instance of the user if the credentials match the user's email and password inside the database
         """
-        user = User()
-        if user_email or user_pwd is None:#not isinstance(user_email, str) or not isinstance(user_pwd, str):
+        if user_email is None or not isinstance(user_email, str):
             return None
-        if not isinstance(user_email, str) or not isinstance(user_pwd, str):
+
+        if user_pwd is None or not isinstance(user_pwd, str):
             return None
-        dict_user_emails = {}
-        dict_user_emails['user_email']
+
         try:
-            user.search(dict_user_emails)
-        except:
+            found_users = User.search({'email': user_email})
+        except Exception:
             return None
-        
-        if is_valid_password is False:
-            return None
-        return user.search(dict_user_emails)
+
+        for user in found_users:
+            if user.is_valid_password(user_pwd):
+                return user
+
+        return None
