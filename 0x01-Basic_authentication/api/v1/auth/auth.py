@@ -23,7 +23,7 @@ class Auth:
             regex_pattern = ep.replace('*', '.*')
             if re.match(regex_pattern + '$', path):  # Ensures full path match
                 return False
-        return True
+            return True
     
     def authorization_header(self, request=None) -> str:
         """
