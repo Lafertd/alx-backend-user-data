@@ -18,11 +18,12 @@ class Auth:
             return True
         # Normalize the input path and excluded paths
         path = path.rstrip('/')
-        excluded_paths = [ep.rstrip('/') re.search('$*', ep) for ep in excluded_paths]
-        # Check if normalized path is in excluded_paths
-        if path in excluded_paths:
-            return False
-        return True
+        normalized_excluded_paths = [ep.rstrip('/') for ep in excluded_paths]
+        for ep in normalized_excluded_paths:
+            regex_pattern = ep.replace('*', '.*')
+            if re.match(regex_pattern + '$', path):  # Ensures full path match
+                return False
+            return True
     
     def authorization_header(self, request=None) -> str:
         """
