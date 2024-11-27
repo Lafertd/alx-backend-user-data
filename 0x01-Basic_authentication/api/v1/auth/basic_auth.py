@@ -70,7 +70,7 @@ class BasicAuth(Auth):
         if decode_base64_authorization_header is None or not_string or \
                 ':' not in decode_base64_authorization_header:
             return None, None
-        credentials = tuple(decode_base64_authorization_header.split(':', 2))
+        credentials = tuple(decode_base64_authorization_header.split(':', 1))
         return credentials
 
     def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):

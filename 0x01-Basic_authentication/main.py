@@ -7,7 +7,7 @@ from models.user import User
 
 """ Create a user test """
 user_email = "bob@hbtn.io"
-user_clear_pwd = "H0lbertonwchool98!"
+user_clear_pwd = "H0lberto:nwchool98!"
 user = User()
 user.email = user_email
 user.password = user_clear_pwd
