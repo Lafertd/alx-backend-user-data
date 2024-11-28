@@ -3,6 +3,7 @@
 """
 from api.v1.auth.auth import Auth
 import uuid
+from models.user import User
 class SessionAuth(Auth):
     """ Class that serves as the base for session authentication
     """
@@ -38,3 +39,19 @@ class SessionAuth(Auth):
             if key == session_id:
                 user_id = sa[key]
                 return user_id
+    def current_user(self, request=None):
+        """ Method overload and returns a User instance based
+            on a cookie value
+        """
+        if request is None:
+            return None
+        if self.session_cookie(request) is None:
+            return None
+        else:
+            cookie_value = self.session_cookie(request)
+            self.user_id_for_session_id(cookie_value)
+            if self.user_id_for_session_id(cookie_value) is None:
+                return None
+            else:
+                user_id_from_cookie = self.user_id_for_session_id(cookie_value)
+                return User.get(user_id_from_cookie)
