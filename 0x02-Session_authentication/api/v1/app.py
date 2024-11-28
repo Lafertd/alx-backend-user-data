@@ -41,16 +41,6 @@ def forbidden(error) -> str:
     """
     return jsonify({"error": "Forbidden"}), 403
 
-    """
-    Filter each request before it's handled by the proper route
-    """
-        setattr(request, "current_user", auth.current_user(request))
-        excluded = [
-            '/api/v1/status/',
-            '/api/v1/unauthorized/',
-            '/api/v1/forbidden/',
-            '/api/v1/auth_session/login/'
-        ]
 @app.before_request
 def before_request() -> str:
     """
