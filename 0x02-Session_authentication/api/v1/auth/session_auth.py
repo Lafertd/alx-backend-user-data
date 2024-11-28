@@ -7,10 +7,7 @@ class SessionAuth(Auth):
     """ Class that serves as the base for session authentication
     """
 
-    def __init__(self):
-        """ Attributes of the Class
-        """
-        self.user_id_by_session_id = {}
+    user_id_by_session_id = {}
 
     def create_session(self, user_id: str = None) -> str:
         """ Method that creates a Session ID for a user_id
