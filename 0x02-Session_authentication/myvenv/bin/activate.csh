@@ -9,17 +9,17 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/alx-backend-user-data/0x01-Basic_authentication/myvenv"
+setenv VIRTUAL_ENV /alx-backend-user-data/0x02-Session_authentication/myvenv
 
 set _OLD_VIRTUAL_PATH="$PATH"
-setenv PATH "$VIRTUAL_ENV/bin:$PATH"
+setenv PATH "$VIRTUAL_ENV/"bin":$PATH"
 
 
 set _OLD_VIRTUAL_PROMPT="$prompt"
 
 if (! "$?VIRTUAL_ENV_DISABLE_PROMPT") then
-    set prompt = "(myvenv) $prompt"
-    setenv VIRTUAL_ENV_PROMPT "(myvenv) "
+    set prompt = '(myvenv) '"$prompt"
+    setenv VIRTUAL_ENV_PROMPT '(myvenv) '
 endif
 
 alias pydoc python -m pydoc
