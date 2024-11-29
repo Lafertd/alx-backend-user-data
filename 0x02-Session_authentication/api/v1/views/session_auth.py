@@ -32,5 +32,3 @@ def auth_session():
             resp.set_cookie(session_name, session_id)
             return resp
     return jsonify({"error": "wrong password"}), 401
-
-
