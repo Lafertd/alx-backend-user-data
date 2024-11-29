@@ -56,8 +56,6 @@ def session_logout():
       - Logout the user
     """
     from api.v1.app import auth
-    cookie_name = auth.session_cookie(request)
-    request.cookies.get('cookie_name')
     if not auth.destroy_session(request):
         abort(404)
     else:
