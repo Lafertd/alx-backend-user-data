@@ -65,7 +65,7 @@ class SessionAuth(Auth):
          bool: True if the use session is deleted otherwise return False
         """
         if request is None:
-            return None
+            return False
         if self.session_cookie(request) not in request:
             return False
         sa = SessionAuth.__dict__.get('user_id_by_session_id')
@@ -74,6 +74,25 @@ class SessionAuth(Auth):
                 user_id = sa[key]
         if not self.user_id_for_session_id(self.session_cookie(request)) == user_id:
             return False
-        else:
+        try:
             __del__.self.user_id_by_session_id[self.session_cookie(request)]
-            return True
+        except Exception:
+            pass
+        return True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
