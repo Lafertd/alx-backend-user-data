@@ -1,42 +1,46 @@
-from flask import request, jsonify, make_response
-from api.v1.app import auth
+#!/usr/bin/env python3
+""" Module of Users views
+"""
+import os
+from flask import jsonify, request
+from api.v1.views import app_views
 from models.user import User
 
-# Route to handle user login with session authentication
-@app.route('/api/v1/auth_session/login', methods=['POST'], strict_slashes=False)
-def login():
-    # Retrieve email and password from the form data
+
+@app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
+def auth_session():
+    """
+    Handle user login
+    Return:
+        dictionary representation of user if found else error message
+    """
     email = request.form.get('email')
     password = request.form.get('password')
-
-    # Check if email is missing or empty
-    if not email:
+    if email is None or email == '':
         return jsonify({"error": "email missing"}), 400
-    
-    # Check if password is missing or empty
-    if not password:
+    if password is None or password == '':
         return jsonify({"error": "password missing"}), 400
-    
-    # Retrieve user based on email
-    user = User.search(email)
-    
-    # If no user found, return error
-    if not user:
+    users = User.search({"email": email})
+    if not users or users == []:
         return jsonify({"error": "no user found for this email"}), 404
-    
-    # Check if password is valid
-    if not user.is_valid_password(password):
-        return jsonify({"error": "wrong password"}), 401
-    
-    # Create a session for the user
-    session_id = auth.create_session(user.id)
-    
-    # Create response with user's JSON representation
-    user_json = user.to_json()
-    
-    # Set the session ID in a cookie
-    response = make_response(jsonify(user_json))
-    response.set_cookie(auth.SESSION_NAME, session_id)
-    
-    return response
+    for user in users:
+        if user.is_valid_password(password):
+            from api.v1.app import auth
+            session_id = auth.create_session(user.id)
+            resp = jsonify(user.to_json())
+            session_name = os.getenv('SESSION_NAME')
+            resp.set_cookie(session_name, session_id)
+            return resp
+    return jsonify({"error": "wrong password"}), 401
 
+
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def handle_logout():
+    """
+    Handle user logout
+    """
+    from api.v1.app import auth
+    if auth.destroy_session(request):
+        return jsonify({}), 200
+    abort(404)
