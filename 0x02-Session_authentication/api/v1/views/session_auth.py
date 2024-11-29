@@ -1,36 +1,64 @@
 #!/usr/bin/env python3
+""" Module of Session authentication views
 """
-Module of Session Auth
-"""
-
-from flask import request, jsonify, current_app
-from api.v1.app import auth
-from models.user import User
 from api.v1.views import app_views
+from flask import abort, jsonify, request
+from models.user import User
+from os import getenv
 
 
-@app_views.route('/auth_session/login',
-                 methods=['POST'],
-                 strict_slashes=False)
-def session_login():
-    """ POST /api/v1/auth_session/login """
+@app_views.route('/api/v1/auth_session/login', methods=['POST'], strict_slashes=False)
+def login():
+    """ POST /auth_session/login
+    Return
+        - Logged in user
+    """
     email = request.form.get('email')
-    password = request.form.get('password')
 
     if not email:
         return jsonify({"error": "email missing"}), 400
+
+    password = request.form.get('password')
+
     if not password:
         return jsonify({"error": "password missing"}), 400
 
-    user = User.search({'email': email})
-    if not user:
+    try:
+        found_users = User.search({'email': email})
+    except Exception:
         return jsonify({"error": "no user found for this email"}), 404
 
-    if not user[0].is_valid_password(password):
-        return jsonify({"error": "wrong password"}), 401
+    if not found_users:
+        return jsonify({"error": "no user found for this email"}), 404
 
-    session_id = auth.create_session(user[0].id)
-    response = jsonify(user[0].to_json())
-    response.set_cookie(current_app.config['SESSION_NAME'], session_id)
+    for user in found_users:
+        if not user.is_valid_password(password):
+            return jsonify({"error": "wrong password"}), 401
 
-    return response, 200
+    from api.v1.app import auth
+
+    user = found_users[0]
+    session_id = auth.create_session(user.id)
+
+    session_name = getenv("SESSION_NAME")
+
+    response = jsonify(user.to_json())
+    response.set_cookie(session_name, session_id)
+
+    return response
+
+@app_views.route('/api/v1/auth_session/logout',
+                 methods=['DELETE'],
+                 strict_slashes=False)
+def session_logout():
+    """ DELETE /api/v1/auth_session/logout
+    Returns:
+      - Logout the user
+    """
+    from api.v1.app import auth
+    cookie_name = auth.session_cookie(request)
+    request.cookies.get('cookie_name')
+    if not auth.destroy_session(request):
+        abort(404)
+    else:
+        return jsonify({}), 200
