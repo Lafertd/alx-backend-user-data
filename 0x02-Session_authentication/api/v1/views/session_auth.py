@@ -39,9 +39,9 @@ def login():
     user = found_users[0]
     session_id = auth.create_session(user.id)
 
-    SESSION_NAME = getenv("SESSION_NAME")
+    session_name = getenv("SESSION_NAME")
 
     response = jsonify(user.to_json())
-    response.set_cookie(SESSION_NAME, session_id)
+    response.set_cookie(session_name, session_id)
 
     return response
